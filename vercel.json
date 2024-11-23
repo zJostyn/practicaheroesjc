@@ -1,6 +1,6 @@
 {
     "rewrites": [
-      { "source": "/src/Paginas/:path*", "destination": "/Paginas/:path*" }
+      { "source": "/Paginas/:path*", "destination": "/Paginas/:path*" }
     ]
   }
   
