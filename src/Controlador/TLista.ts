@@ -62,7 +62,7 @@ export function Editar(codigo: number) {
     localStorage.setItem("ListaHeroes", JSON.stringify(ListHeroe));
     localStorage.removeItem("editar");
 
-    window.location.href = '../index.html';
+    window.location.href = './index.html';
     
     Listar();
 }

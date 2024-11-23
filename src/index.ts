@@ -56,7 +56,7 @@ function reiniciarLista() {
 }
 
 function regresarInicio() {
-    window.location.href = '../index.html';
+    window.location.href = './index.html';
 }
 
 function eliminarEditar() {
@@ -107,7 +107,7 @@ if (obtenerPagina.endsWith("index.html")) {
 
             localStorage.setItem("editar", JSON.stringify(heroe));
 
-            window.location.href = '../src/Paginas/Insertar.html';
+            window.location.href = './Insertar.html';
         }
     });
 }
