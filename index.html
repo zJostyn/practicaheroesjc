@@ -7,9 +7,21 @@
     <link href="./src/style.css" rel="stylesheet">
     <title>Gestión de Héroes</title>
   </head>
+
   <body>
+
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <a href="#">Proyecto Heroés</a>
+      </div>
+      <ul class="navbar-links">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a id="btn-insert" href="../src/Paginas/Insertar.html">Insertar</a></li>
+      </ul>
+    </nav>
+
     <h1>Administración de Héroes</h1>
-    <button id="btn-add">Agregar Héroe</button>
+    <button id="btn-rs">Reiniciar Lista</button>
     <table id="tabla-H">
         <thead>
             <tr>
@@ -25,31 +37,6 @@
     </table>
 
     <div id="container-form" class="modal">
-        <form id="hero-form">
-          <button id="salir" style="color: black;">X</button>
-          <h2 id="hero-titulo">Agregar Héroe</h2>
-            <label>Código:
-              <br>
-              <input type="number" id="codigo">
-            </label>
-            <label>Nombre:
-              <br>
-              <input type="text" id="nombre">
-            </label>
-            <label>Edad:
-              <br>
-              <input type="number" id="edad">
-            </label>
-            <label>Ciudad:
-              <br>
-              <input type="text" id="ciudad">
-            </label>
-            <label>Imagen:
-              <br>
-              <input type="text" id="imagen">
-            </label>
-            <button id="btn">Guardar</button>
-        </form>
     </div>
     <script type="module" src="/src/index.ts"></script>
   </body>

@@ -10,36 +10,57 @@ console.log(ListaHeroes);
 const tabla = document.getElementById("tabla-H") as HTMLTableElement;
 const modal = document.getElementById("container-form");
 let button = document.getElementById("btn") as HTMLButtonElement;
-let buttonAdd = document.getElementById("btn-add") as HTMLButtonElement;
+let buttonRS = document.getElementById("btn-rs") as HTMLButtonElement;
+let buttonRG = document.getElementById("btn-rg") as HTMLButtonElement;
+let buttonIT = document.getElementById("btn-insert") as HTMLButtonElement;
+
 let primerValor = 0;
 let opcion = '';
+const obtenerPagina = window.location.pathname;
 
 document.addEventListener("DOMContentLoaded", () => {
-    button = document.getElementById("btn") as HTMLButtonElement;
-    buttonAdd = document.getElementById("btn-add") as HTMLButtonElement;
-
     if (button) button.addEventListener("click", save);
-    else console.error("Elemento btn no encontrado.");
+    else console.log("Elemento btn no encontrado.");
 
-    if (buttonAdd) buttonAdd.addEventListener("click", openModal);
-    else console.error("Elemento btn-add no encontrado.");
+    if (buttonRS) buttonRS.addEventListener("click", reiniciarLista);
+    else console.log("Elemento btn-rs no encontrado.");
+
+    if (buttonRG) buttonRG.addEventListener("click", regresarInicio);
+    else console.log("Elemento btn-rg no encontrado.");
+
+    if (buttonIT) buttonIT.addEventListener("click", eliminarEditar);
+    else console.log("Elemento btn-rg no encontrado.");
 });
 
-
-function openModal() {
-    if (modal) {
-        modal.classList.add('active');
-        console.log("Abrir modal");
-        modal.onclick = (event: Event) => {
-            const target = event.target as HTMLDivElement;
-            if (target.className.indexOf("container-form") !== -1) {
-                modal.classList.remove("active");
-                primerValor = 0;
-                limpiar();
-                opcion = "";
-            }
-        };
+document.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("editar") != null && obtenerPagina.endsWith("Insertar.html")) {
+        console.log("Esta entrando a editar")
+        const heroeEditado = JSON.parse(localStorage.getItem("editar") || "[]");
+        opcion = 'editar';
+        primerValor = heroeEditado.Codigo;
+        (<HTMLHeadingElement>document.getElementById("hero-titulo")).innerText = 'Editar Héroe';
+        (<HTMLButtonElement>document.getElementById("btn")).innerText = 'Modificar';
+        (<HTMLInputElement>document.getElementById("codigo")).value = heroeEditado.Codigo;
+        (<HTMLInputElement>document.getElementById("nombre")).value = heroeEditado.Nombre;
+        (<HTMLInputElement>document.getElementById("edad")).value = heroeEditado.Edad;
+        (<HTMLInputElement>document.getElementById("ciudad")).value = heroeEditado.Ciudad;
+        (<HTMLInputElement>document.getElementById("imagen")).value = heroeEditado.Imagen;
+    } else {
+        console.log("No esta para editar");
     }
+});
+
+function reiniciarLista() {
+    localStorage.setItem("ListaHeroes", JSON.stringify(ListaHeroes));
+    Listar();
+}
+
+function regresarInicio() {
+    window.location.href = '../index.html';
+}
+
+function eliminarEditar() {
+    localStorage.removeItem("editar");
 }
 
 //funcion limpiar campos
@@ -68,39 +89,40 @@ function save(e: Event): void {
 }
 
 //Se obtiene el codigo
-tabla.addEventListener('click', (event) => {
-    const target = event.target as HTMLButtonElement;
-    let parent = (<HTMLElement>(<HTMLElement>event.target).parentNode?.parentNode);
-    if (target.classList.contains("editar")) {
-        openModal();
-        const fila = parent;
-        primerValor = Number(fila.children[0].innerHTML);
-        opcion = "editar";
-        (<HTMLHeadingElement>document.getElementById("hero-titulo")).innerText = 'Editar Héroe';
-        (<HTMLButtonElement>document.getElementById("btn")).innerText = 'Modificar';
-        (<HTMLInputElement>document.getElementById("codigo")).value = (fila.children[0].innerHTML);
-        (<HTMLInputElement>document.getElementById("nombre")).value = (fila.children[1].innerHTML);
-        (<HTMLInputElement>document.getElementById("edad")).value = (fila.children[2].innerHTML);
-        (<HTMLInputElement>document.getElementById("ciudad")).value = (fila.children[3].innerHTML);
-        const imagen = fila.children[4].querySelector('img') as HTMLImageElement;
-        if (imagen) {
-            (<HTMLInputElement>document.getElementById("imagen")).value = imagen.src;
+if (obtenerPagina.endsWith("index.html")) {
+    tabla.addEventListener('click', (event) => {
+        const target = event.target as HTMLButtonElement;
+        let parent = (<HTMLElement>(<HTMLElement>event.target).parentNode?.parentNode);
+        if (target.classList.contains("editar")) {
+            const fila = parent;
+            primerValor = Number(fila.children[0].innerHTML);
+            opcion = "editar";
+            const heroe = {
+                Codigo: Number(fila.children[0].innerHTML),
+                Nombre: fila.children[1].innerHTML,
+                Edad: Number(fila.children[2].innerHTML),
+                Ciudad: fila.children[3].innerHTML,
+                Imagen: fila.children[4].querySelector('img')?.src ?? ''
+            }
+
+            localStorage.setItem("editar", JSON.stringify(heroe));
+
+            window.location.href = '../src/Paginas/Insertar.html';
         }
-        console.log("Editando");
-
-    }
-
-});
+    });
+}
 
 //Funcion Eliminar
-tabla.addEventListener('click', (event) => {
-    const target = event.target as HTMLButtonElement;
-    let parent = (<HTMLElement>(<HTMLElement>event.target).parentNode?.parentNode);
-    if (target.classList.contains("eliminar")) {
-        const fila = parent;
-        primerValor = Number(fila.children[0].innerHTML);
-        Eliminar(primerValor);
-        console.log("Eliminado");
-        primerValor = 0;
-    }
-});
+if(obtenerPagina.endsWith("index.html")) {
+    tabla.addEventListener('click', (event) => {
+        const target = event.target as HTMLButtonElement;
+        let parent = (<HTMLElement>(<HTMLElement>event.target).parentNode?.parentNode);
+        if (target.classList.contains("eliminar")) {
+            const fila = parent;
+            primerValor = Number(fila.children[0].innerHTML);
+            Eliminar(primerValor);
+            console.log("Eliminado");
+            primerValor = 0;
+        }
+    });
+}
