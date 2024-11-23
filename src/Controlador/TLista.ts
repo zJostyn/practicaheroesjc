@@ -80,7 +80,7 @@ export function Eliminar(codigo: number) {
 
 // Funcion listar heroes
 export function Listar() {
-    if (obtenerPagina.endsWith("index.html")) {
+    if (obtenerPagina.endsWith("Insertar.html") == false) {
         let lis = "";
         if (localStorage.getItem("ListaHeroes")?.length == null) {
             localStorage.setItem("ListaHeroes", JSON.stringify(ListaHeroes));
